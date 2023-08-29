@@ -11,3 +11,6 @@ python-dotenv = "*"
 
 [requires]
 python_version = "3.11"
+
+[scripts]
+lock = "sh -c 'pipenv -q requirements > requirements.txt'"
