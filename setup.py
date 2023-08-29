@@ -10,12 +10,12 @@ if os.path.isfile(requirement_path):
 
 setup(
     name="tgsend",
-    version="0.2",
+    version="0.3",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
             "tgsend = tgsend.main:main",
         ],
     },
-    install_requires=install_requires,
+    install_requires=install_requires[1:],
 )
