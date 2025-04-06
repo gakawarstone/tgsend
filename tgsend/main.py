@@ -18,12 +18,15 @@ def get_config() -> Tuple[Bot, str]:
         CHAT_ID = os.environ["CHAT_ID"]
         return (Bot(BOT_TOKEN), CHAT_ID)
     except KeyError:
-        print("Run tgsend config")
+        print("please run init first")
         exit(1)
 
 
 async def async_main():
-    if sys.argv[1] == "config":
+    if len(sys.argv) == 1:
+        print("or provide file as an argument")
+        return 1
+    if sys.argv[1] == "init":
         open(ROOT_DIR + "/.env", "w").write("BOT_TOKEN=" + input("BOT_TOKEN=") + "\n")
         open(ROOT_DIR + "/.env", "a").write("CHAT_ID=" + input("CHAT_ID=") + "\n")
         return
