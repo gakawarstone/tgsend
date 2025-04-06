@@ -2,14 +2,15 @@ import os
 import sys
 import asyncio
 from typing import Tuple
+from pathlib import Path
 
 from dotenv import load_dotenv
 from aiogram import Bot
 from aiogram.types import FSInputFile
 
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(ROOT_DIR + "/.env")
+ENV_PATH = Path().home() / ".config/tgsend/.env"
+load_dotenv(ENV_PATH)
 
 
 def get_config() -> Tuple[Bot, str]:
@@ -27,8 +28,8 @@ async def async_main():
         print("or provide file as an argument")
         return 1
     if sys.argv[1] == "init":
-        open(ROOT_DIR + "/.env", "w").write("BOT_TOKEN=" + input("BOT_TOKEN=") + "\n")
-        open(ROOT_DIR + "/.env", "a").write("CHAT_ID=" + input("CHAT_ID=") + "\n")
+        open(ENV_PATH, "w").write("BOT_TOKEN=" + input("BOT_TOKEN=") + "\n")
+        open(ENV_PATH, "a").write("CHAT_ID=" + input("CHAT_ID=") + "\n")
         return
 
     bot, chat_id = get_config()
