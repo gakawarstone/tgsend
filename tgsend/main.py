@@ -6,9 +6,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from aiogram import Bot
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.client.telegram import TelegramAPIServer
 from aiogram.types import FSInputFile
 
 
+print("test")
 ENV_PATH = Path().home() / ".config/tgsend/.env"
 load_dotenv(ENV_PATH)
 
@@ -17,7 +20,13 @@ def get_config() -> Tuple[Bot, str]:
     try:
         BOT_TOKEN = os.environ["BOT_TOKEN"]
         CHAT_ID = os.environ["CHAT_ID"]
-        return (Bot(BOT_TOKEN), CHAT_ID)
+
+        API_SERVER_URL = os.getenv("API_SERVER_URL")
+        if not API_SERVER_URL:
+            API_SERVER_URL = "https://api.telegram.org"
+        session = AiohttpSession(api=TelegramAPIServer.from_base(API_SERVER_URL))
+
+        return (Bot(BOT_TOKEN, session=session), CHAT_ID)
     except KeyError:
         print("please run init first")
         exit(1)
@@ -41,7 +50,8 @@ async def async_main():
         case _:
             bot, chat_id = get_config()
             for path in sys.argv[1:]:
-                file = FSInputFile(os.getcwd() + "/" + path)
+                # file = FSInputFile(os.getcwd() + "/" + path)
+                file = FSInputFile(path)
                 await bot.send_document(chat_id, file)
 
     await bot.session.close()
