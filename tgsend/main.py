@@ -11,7 +11,6 @@ from aiogram.client.telegram import TelegramAPIServer
 from aiogram.types import FSInputFile
 
 
-print("test")
 ENV_PATH = Path().home() / ".config/tgsend/.env"
 load_dotenv(ENV_PATH)
 
@@ -37,6 +36,7 @@ async def async_main():
         print("or provide file as an argument")
         return 1
     if sys.argv[1] == "init":
+        ENV_PATH.parent.mkdir(parents=True, exist_ok=True)
         open(ENV_PATH, "w").write("BOT_TOKEN=" + input("BOT_TOKEN=") + "\n")
         open(ENV_PATH, "a").write("CHAT_ID=" + input("CHAT_ID=") + "\n")
         return
